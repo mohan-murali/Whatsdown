@@ -1,0 +1,13 @@
+export const BODY_PRIMARY_DARK = "#d4d5d7";
+export const SEARCH_INPUT_BACKGROUND = "#323739";
+export const APP_BACKGROUND = "#090e11";
+export const BACKGROUND_DEFAULT = "#131c21";
+export const BACKGROUND_DEFAULT_ACTIVE = "#323739";
+export const BACKGROUND_DEFAULT_HOVER = "#2d3134";
+export const BADGE_BORDER = "#d4d5d7";
+export const BETA_TAG_BACKGROUND = "#364147";
+export const BORDER_DEFAULT = "#242d32";
+export const BORDER_LIST = "#30383d";
+export const PANEL_HEADER_ICON = "#B1B3B5";
+export const INCOMING_BACKGROUND = "#262d31";
+export const COMPOSE_PANEL_BACKGROUND = "#1e2428";
