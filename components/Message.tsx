@@ -9,8 +9,6 @@ export default function Message({ email, message }) {
 
   const TypeOfMessage = email === userLoggedIn.email ? Sender : Reciever;
 
-  console.log(email);
-
   return (
     <Container>
       <TypeOfMessage>
