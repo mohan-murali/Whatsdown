@@ -1,8 +1,10 @@
 import { Circle } from "better-react-spinkit";
+import styled from "styled-components";
+import { BACKGROUND_DEFAULT } from "../utils/constants";
 
 const Loading = () => {
   return (
-    <div style={{ display: "grid", placeItems: "center", height: "100vh" }}>
+    <Container>
       <div
         style={{
           display: "flex",
@@ -10,16 +12,18 @@ const Loading = () => {
           alignItems: "center",
         }}
       >
-        <img
-          src="https://png.pngtree.com/element_our/md/20180626/md_5b321c99945a2.jpg"
-          alt=""
-          style={{ marginBottom: 40 }}
-          height={200}
-        />
+        <img src="/logo.png" alt="" style={{ marginBottom: 40 }} height={200} />
         <Circle color="#3CBC28" size={60} />
       </div>
-    </div>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  display: grid;
+  background-color: ${BACKGROUND_DEFAULT};
+  place-items: center;
+  height: 100vh;
+`;
 
 export default Loading;
