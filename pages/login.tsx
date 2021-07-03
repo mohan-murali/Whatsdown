@@ -2,6 +2,12 @@ import { Button } from "@material-ui/core";
 import Head from "next/head";
 import styled from "styled-components";
 import { auth, provider } from "../firebase";
+import {
+  BACKGROUND_DEFAULT,
+  BODY_PRIMARY_DARK,
+  BORDER_DEFAULT,
+  COMPOSE_PANEL_BACKGROUND,
+} from "../utils/constants";
 
 const Login = () => {
   const signIn = () => {
@@ -14,7 +20,7 @@ const Login = () => {
       </Head>
 
       <LoginContainter>
-        <Logo src="https://png.pngtree.com/element_our/md/20180626/md_5b321c99945a2.jpg"></Logo>
+        <Logo src="/logo.png"></Logo>
         <Button onClick={signIn} variant="outlined">
           Sign In with Google
         </Button>
@@ -29,16 +35,16 @@ const Containter = styled.div`
   display: grid;
   place-items: center;
   height: 100vh;
-  background-color: whitesmoke;
+  background-color: ${COMPOSE_PANEL_BACKGROUND};
 `;
 
 const LoginContainter = styled.div`
   padding: 100px;
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: ${BODY_PRIMARY_DARK};
   border-radius: 5px;
-  box-shadow: 0px 4px 14px -3px rgba(0, 0, 0, 0.7);
+  box-shadow: 0px 4px 14px -3px ${BORDER_DEFAULT};
 `;
 
 const Logo = styled.img`
