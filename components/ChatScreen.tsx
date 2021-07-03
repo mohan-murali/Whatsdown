@@ -12,7 +12,7 @@ import {
   BODY_PRIMARY_DARK,
   COMPOSE_PANEL_BACKGROUND,
   SEARCH_INPUT_BACKGROUND,
-} from "../pages/constants";
+} from "../utils/constants";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "./Message";
 import firebase from "firebase";

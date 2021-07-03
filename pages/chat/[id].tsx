@@ -17,11 +17,7 @@ export default function Chat({ chat, messages }) {
       </Head>
       <Sidebar />
       <ChatContainer>
-        <ChatScreen
-          recipientEmail={recipientEmail}
-          chat={chat}
-          messages={messages}
-        />
+        <ChatScreen recipientEmail={recipientEmail} messages={messages} />
       </ChatContainer>
     </Container>
   );
@@ -42,7 +38,6 @@ export async function getServerSideProps(context) {
     }))
     .map((messages) => ({
       ...messages,
-      timestamp: messages.timestamp.toDate().getTime(),
     }));
 
   //PREP the chats

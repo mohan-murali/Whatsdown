@@ -5,8 +5,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 import styled from "styled-components";
 import { auth, db } from "../firebase";
-import { BACKGROUND_DEFAULT_HOVER } from "../pages/constants";
-import getRecipientEmail from "../utils/getrecipientEmail";
+import { BACKGROUND_DEFAULT_HOVER } from "../utils/constants";
+import getRecipientEmail from "../utils/getRecipientEmail";
 
 export default function Chat({ id, users }) {
   const { push } = useRouter();
