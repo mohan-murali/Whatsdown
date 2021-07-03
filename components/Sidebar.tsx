@@ -17,7 +17,7 @@ import {
   INCOMING_BACKGROUND,
   PANEL_HEADER_ICON,
   SEARCH_INPUT_BACKGROUND,
-} from "../pages/constants";
+} from "../utils/constants";
 
 function Sidebar() {
   const [user] = useAuthState(auth);
@@ -25,6 +25,7 @@ function Sidebar() {
     .collection("chats")
     .where("users", "array-contains", user.email);
   const [chatsSnapshot] = useCollection(userChatRef);
+
   const createChat = () => {
     const input = prompt(
       "Please enter an email address for the user you wish to chat with"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { Avatar, IconButton } from "@material-ui/core";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -12,12 +12,12 @@ import {
   BODY_PRIMARY_DARK,
   COMPOSE_PANEL_BACKGROUND,
   SEARCH_INPUT_BACKGROUND,
-} from "../pages/constants";
+} from "../utils/constants";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "./Message";
 import firebase from "firebase";
 
-export default function ChatScreen({ chat, messages, recipientEmail }) {
+export default function ChatScreen({ messages, recipientEmail }) {
   const [user] = useAuthState(auth);
   const router = useRouter();
   const [messagesSnapshot] = useCollection(
@@ -28,7 +28,18 @@ export default function ChatScreen({ chat, messages, recipientEmail }) {
       .orderBy("timestamp", "asc")
   );
 
-  console.log(messages);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const [recipientSnapshot] = useCollection(
     db.collection("user").where("email", "==", recipientEmail)
@@ -78,10 +89,12 @@ export default function ChatScreen({ chat, messages, recipientEmail }) {
         });
 
       setInput("");
+      scrollToBottom();
     }
   };
 
   const recipient = recipientSnapshot?.docs?.[0]?.data();
+
   return (
     <Container>
       <Header>
@@ -102,20 +115,22 @@ export default function ChatScreen({ chat, messages, recipientEmail }) {
           </IconButton>
         </HeaderIcons>
       </Header>
-      <MessageContainer>{showMessages()}</MessageContainer>
-      <footer>
-        <Footer>
-          <IconButton>
-            <InsertEmoticonIcon style={{ color: `${BODY_PRIMARY_DARK}` }} />
-          </IconButton>
-          <SendMessage
-            value={input}
-            onChange={onMessageChange}
-            onKeyPress={handleKeyPress}
-            placeholder="Type a message"
-          />
-        </Footer>
-      </footer>
+      <MessageContainer>
+        {showMessages()}
+        <MessageEnd ref={messagesEndRef} />
+      </MessageContainer>
+
+      <Footer>
+        <IconButton>
+          <InsertEmoticonIcon style={{ color: `${BODY_PRIMARY_DARK}` }} />
+        </IconButton>
+        <SendMessage
+          value={input}
+          onChange={onMessageChange}
+          onKeyPress={handleKeyPress}
+          placeholder="Type a message"
+        />
+      </Footer>
     </Container>
   );
 }
@@ -123,16 +138,28 @@ export default function ChatScreen({ chat, messages, recipientEmail }) {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: 97.5vh;
-  position: sticky;
-  z-index: 100;
 `;
 
-const MessageContainer = styled.div``;
+const MessageEnd = styled.div`
+  margin-bottom: 50px;
+`;
+
+const MessageContainer = styled.div`
+  overflow-y: scroll;
+  flex: 1;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`;
 
 const Header = styled.div`
   display: flex;
+  position: sticky;
+  flex: none;
+  top: 0;
+  z-index: 100;
   align-items: center;
   justify-content: space-between;
   background-color: ${BACKGROUND_DEFAULT_HOVER};
@@ -151,6 +178,8 @@ const Footer = styled.div`
   align-items: center;
   background-color: ${COMPOSE_PANEL_BACKGROUND};
   position: sticky;
+  flex: none;
+  bottom: 0;
   z-index: 100;
 `;
 
