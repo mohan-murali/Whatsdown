@@ -11,3 +11,4 @@ export const BORDER_LIST = "#30383d";
 export const PANEL_HEADER_ICON = "#B1B3B5";
 export const INCOMING_BACKGROUND = "#262d31";
 export const COMPOSE_PANEL_BACKGROUND = "#1e2428";
+export const MODAL_BACKGROUND = "black";
