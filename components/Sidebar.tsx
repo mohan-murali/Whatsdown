@@ -1,5 +1,11 @@
-import { Avatar, Button, IconButton } from "@material-ui/core";
-import React from "react";
+import {
+  Avatar,
+  Button,
+  IconButton,
+  Modal,
+  TextField,
+} from "@material-ui/core";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ChatIcon from "@material-ui/icons/Chat";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -14,7 +20,9 @@ import {
   BODY_PRIMARY_DARK,
   BORDER_DEFAULT,
   BORDER_LIST,
+  COMPOSE_PANEL_BACKGROUND,
   INCOMING_BACKGROUND,
+  MODAL_BACKGROUND,
   PANEL_HEADER_ICON,
   SEARCH_INPUT_BACKGROUND,
 } from "../utils/constants";
@@ -25,24 +33,16 @@ function Sidebar() {
     .collection("chats")
     .where("users", "array-contains", user.email);
   const [chatsSnapshot] = useCollection(userChatRef);
+  const [open, setOpen] = useState(true);
+  const [enteredEmail, setEnteredEmail] = useState("");
 
   const createChat = () => {
-    const input = prompt(
-      "Please enter an email address for the user you wish to chat with"
-    );
+    setOpen(true);
+  };
 
-    if (!input) return;
-
-    if (
-      EmailValidator.validate(input) &&
-      !chatAlreadyExists(input) &&
-      input !== user.email
-    ) {
-      //we need to add the chat into the DB.
-      db.collection("chats").add({
-        users: [user.email, input],
-      });
-    }
+  const handleClose = () => {
+    setEnteredEmail("");
+    setOpen(false);
   };
 
   const chatAlreadyExists = (recipientEmail: string) =>
@@ -50,6 +50,27 @@ function Sidebar() {
       (chat) =>
         chat.data().users.find((user) => user === recipientEmail)?.length > 0
     );
+
+  const onEmailChange = ({ target }) => {
+    setEnteredEmail(target.value);
+  };
+
+  const addNewChat = () => {
+    if (!enteredEmail) return;
+
+    if (
+      EmailValidator.validate(enteredEmail) &&
+      !chatAlreadyExists(enteredEmail) &&
+      enteredEmail !== user.email
+    ) {
+      //we need to add the chat into the DB.
+      db.collection("chats").add({
+        users: [user.email, enteredEmail],
+      });
+    }
+    setEnteredEmail("");
+    setOpen(false);
+  };
 
   return (
     <Container>
@@ -77,6 +98,18 @@ function Sidebar() {
       {chatsSnapshot?.docs.map((chat) => (
         <Chat key={chat.id} id={chat.id} users={chat.data().users} />
       ))}
+      <ModalInput open={open} onClose={handleClose}>
+        <ModalContainer>
+          <ModalDiv>
+            <EmailInput
+              value={enteredEmail}
+              onChange={onEmailChange}
+              placeholder="Enter the email id"
+            />
+            <AddEmailButton onClick={addNewChat}> Confirm </AddEmailButton>
+          </ModalDiv>
+        </ModalContainer>
+      </ModalInput>
     </Container>
   );
 }
@@ -88,11 +121,61 @@ const Container = styled.div`
   border: 2px solid ${BORDER_DEFAULT};
 `;
 
+const ModalInput = styled(Modal)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ModalContainer = styled.div`
+  width: 400px;
+  background-color: ${MODAL_BACKGROUND};
+  color: ${BODY_PRIMARY_DARK};
+  border-radius: 5px;
+  box-shadow: 0px 4px 14px -3px ${BORDER_DEFAULT};
+`;
+
+const ModalDiv = styled.div`
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 150px;
+`;
+
+const EmailInput = styled.input`
+  padding-left: 10px;
+  background-color: ${SEARCH_INPUT_BACKGROUND};
+  outline-width: 0;
+  border: none;
+  font-size: 18px;
+  width: 80%;
+  height: 40px;
+  color: ${BODY_PRIMARY_DARK};
+`;
+
+const AddEmailButton = styled(Button)`
+  margin-top: 200px;
+  width: 50%;
+  &&& {
+    color: ${BODY_PRIMARY_DARK};
+    background-color: ${INCOMING_BACKGROUND};
+    border-top: 1px solid ${BORDER_DEFAULT};
+    border-bottom: 1px solid ${BORDER_DEFAULT};
+
+    :hover {
+      background-color: ${BORDER_LIST};
+      transition: 1s;
+    }
+  }
+`;
+
 const SidebarButton = styled(Button)`
   width: 100%;
 
   &&& {
-    color: whitesmoke;
+    color: ${BODY_PRIMARY_DARK};
     background-color: ${INCOMING_BACKGROUND};
     border-top: 1px solid ${BORDER_DEFAULT};
     border-bottom: 1px solid ${BORDER_DEFAULT};

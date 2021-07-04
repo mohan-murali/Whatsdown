@@ -13,12 +13,9 @@ import {
   BODY_PRIMARY_DARK,
   BORDER_DEFAULT,
 } from "../utils/constants";
-import { Modal } from "@material-ui/core";
-import { useState } from "react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [user, loading] = useAuthState(auth);
-  const [open, setOpen] = useState(true);
 
   useEffect(() => {
     if (user) {
@@ -31,9 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [user]);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+
 
   if (loading) return <Loading />;
   if (!user) return <Login />;
@@ -41,14 +36,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Main>
       <Container>
         <Component {...pageProps} />
-        {/* <ModalContainer>
-          <ModalInput open={open} onClose={handleClose}>
-            <>
-              <h2 id="modal-title">My Title</h2>
-              <p id="modal-description">My Description</p>
-            </>
-          </ModalInput>
-        </ModalContainer> */}
       </Container>
     </Main>
   );
@@ -71,16 +58,4 @@ const Container = styled.div`
   background-color: ${BACKGROUND_DEFAULT};
   border: 3px solid ${BORDER_DEFAULT};
   border-radius: 3px;
-`;
-
-const ModalContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ModalInput = styled(Modal)`
-  background-color: white;
-  height: 400px;
-  width: 400px;
 `;
