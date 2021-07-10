@@ -20,7 +20,6 @@ import {
   BODY_PRIMARY_DARK,
   BORDER_DEFAULT,
   BORDER_LIST,
-  COMPOSE_PANEL_BACKGROUND,
   INCOMING_BACKGROUND,
   MODAL_BACKGROUND,
   PANEL_HEADER_ICON,
@@ -33,7 +32,7 @@ function Sidebar() {
     .collection("chats")
     .where("users", "array-contains", user.email);
   const [chatsSnapshot] = useCollection(userChatRef);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [enteredEmail, setEnteredEmail] = useState("");
 
   const createChat = () => {

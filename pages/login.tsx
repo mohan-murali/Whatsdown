@@ -3,7 +3,6 @@ import Head from "next/head";
 import styled from "styled-components";
 import { auth, provider } from "../firebase";
 import {
-  BACKGROUND_DEFAULT,
   BODY_PRIMARY_DARK,
   BORDER_DEFAULT,
   COMPOSE_PANEL_BACKGROUND,
