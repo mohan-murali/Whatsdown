@@ -5,6 +5,7 @@ Are you having problems with your system going down and you dont know what to do
 Whatsdown is a chat application where you can enter an email-id and send messages to the person in real - time. Its design is inspired from whatsapp dark mode for desktop. 
 
 **Currently whatsdown is only available for web*
+
 *PS: Its just a hobby project, dont take things seriously :D*
 
 ### Tech Stack
